@@ -56,30 +56,30 @@ while (amIFirst != 1 || amIFirst !=2){
 		pid = fork();
 		if (pid <0) error("ERROR on fork");
 		if (pid ==0) { close(sockfd);
-		
+		while (1)
 		dostuff(newsockfd);
-		exit(0);
+		//exit(0);
 		}
 		else close(newsockfd);
 		}
 		return 0;
 	}else if (2 == amIFirst){
-		printf("attempting to connect server port %d peer %d\n", portNum, peerNum);
 		csockfd = connectServer(portNum, peerNum);
 		char msg[256];
 		bzero(msg, 256);
-		while (msg[0] !='1'){
-			printf("scanning from user\n");
-		scanf("%s", msg);	//step 1 get message from user
-		printf("writing to socket %s\n", msg);
-		write(csockfd, msg, 256);//step 2 write message to socket
-				
-		printf("reading from socket\n");
-		bzero(msg, 256);
-		while (msg[0] != 0}
-		read(msg, csockfd , 256);	//step 5 read from socket
-		}
+		while (1){
+		printf("enter your message:  ");
+		scanf("%s", msg);
+		write(csockfd, msg, 20);	//step 1
 
+		char buffer[255];
+		buffer[0] = msg[0];
+		while (msg[0] == buffer[0]){//step 4
+			read(csockfd, buffer, 256);
+		}
+		printf("response: %s\n", buffer);
+	}	
+		//writes sends
 		break;
 	}
 	return 0;
@@ -120,21 +120,15 @@ void dostuff(int sock){
 	char b[256];
 	bzero(buffer, 256);
 	bzero(b, 256);
-
-	int k =0;
-	while (k==0){
-		printf("reading from socket\n");
-	n = read(sock, buffer, 256);				//step 3 read from socket
-	if (n <0) error("ERROR readign from socket");
+	n = read(sock, buffer, 256);
+	if (n<0) error("ERROR reading from socket");
+	printf("you heard: %s\b", buffer);//step 2
+		printf("your response: ");
+		scanf("%s", b);
+		write(sock, b, 256); //step 3
 	
-	printf("username %d: %s\n",sock, buffer);
-	printf("scanning from user\n");
-	scanf("%s", &b);
-	printf("writing to socket %s\n", b);
-	write(sock, b, 256);			//step 4 write to socket
-	if (b[0] == 'q') k = 1;		//quits conversation
-	}
-	}
+
+}
 
 //asks user if they're the first online
 int firstOnline(){
