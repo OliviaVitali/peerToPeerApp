@@ -68,16 +68,18 @@ while (amIFirst != 1 || amIFirst !=2){
 		char msg[256];
 		bzero(msg, 256);
 		while (1){
-		printf("enter your message:  ");
+		printf("\nenter your message:");
 		scanf("%s", msg);
 		write(csockfd, msg, 20);	//step 1
 
 		char buffer[255];
-		buffer[0] = msg[0];
-		while (msg[0] == buffer[0]){//step 4
+		buffer[0] = msg[0];	
+		buffer[1] = msg[1];
+		while (msg[0] == buffer[0] && msg[1] == buffer[1] ){//step 4
 			read(csockfd, buffer, 256);
 		}
-		printf("response: %s\n", buffer);
+		printf("response: %s\n", buffer);	
+		
 	}	
 		//writes sends
 		break;
@@ -114,7 +116,6 @@ if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) <0)
 }
 
 void dostuff(int sock){
-	printf("dostuff\n");
 	int n;
 	char buffer[256]= {0};
 	char b[256];
@@ -122,8 +123,8 @@ void dostuff(int sock){
 	bzero(b, 256);
 	n = read(sock, buffer, 256);
 	if (n<0) error("ERROR reading from socket");
-	printf("you heard: %s\b", buffer);//step 2
-		printf("your response: ");
+	printf("\nyou heard: %s", buffer);//step 2
+		printf("\nyour response: ");
 		scanf("%s", b);
 		write(sock, b, 256); //step 3
 	
